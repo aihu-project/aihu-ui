@@ -36,11 +36,11 @@ jobs:
           set -euo pipefail
           expected="${RELEASE_TAG#ui-v}"
           actual="$(node -p "require('./package.json').version")"
-          if [[ ! "$RELEASE_TAG" =~ ^ui-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          if [[ ! "$RELEASE_TAG" =~ ^ui-v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "::error::release tag must be ui-v<stable-semver>; got $RELEASE_TAG"
             exit 1
           fi
-          if [[ ! "$actual" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ || "$expected" != "$actual" ]]; then
+          if [[ ! "$actual" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ || "$expected" != "$actual" ]]; then
             echo "::error::tag $RELEASE_TAG must match stable @aihu/ui@$actual"
             exit 1
           fi
@@ -86,7 +86,7 @@ jobs:
             echo "$package@$version already exists; keeping release idempotent"
             exit 0
           fi
-          if ! grep -q 'E404' <<<"$lookup"; then
+          if ! grep -Eq '(^|[[:space:]])E404([[:space:]]|$)' <<<"$lookup"; then
             echo "::error::npm lookup failed without a confirmed E404"
             printf '%s\n' "$lookup"
             exit 1
