@@ -11,6 +11,8 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 
+import { generateRegistry, serializeRegistry } from './gen-registry.ts'
+
 const ROOT = resolve(dirname(new URL(import.meta.url).pathname), '..')
 const temp = mkdtempSync(join(tmpdir(), 'aihu-ui-contract-'))
 const packDir = join(temp, 'pack')
@@ -19,6 +21,15 @@ mkdirSync(packDir)
 mkdirSync(join(fixture, 'node_modules', '@aihu', 'ui'), { recursive: true })
 
 try {
+  const registryPath = join(ROOT, 'registry.json')
+  const actualRegistry = readFileSync(registryPath, 'utf8')
+  const generatedRegistry = serializeRegistry(generateRegistry(join(ROOT, 'registry')))
+  if (actualRegistry !== generatedRegistry) {
+    throw new Error(
+      'registry.json is out of date; run `bun run gen:registry` and commit the generated output',
+    )
+  }
+
   const packOutput = execFileSync(
     'bun',
     ['pm', 'pack', '--ignore-scripts', '--destination', packDir],
@@ -44,12 +55,44 @@ try {
   ])
   const packageJson = JSON.parse(
     readFileSync(join(fixture, 'node_modules', '@aihu', 'ui', 'package.json'), 'utf8'),
-  ) as { exports?: Record<string, unknown> }
+  ) as {
+    name?: string
+    version?: string
+    files?: string[]
+    exports?: Record<string, unknown>
+  }
+  const sourcePackageJson = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as {
+    name: string
+    version: string
+  }
+  if (
+    packageJson.name !== sourcePackageJson.name ||
+    packageJson.version !== sourcePackageJson.version
+  ) {
+    throw new Error(
+      `packed identity ${packageJson.name}@${packageJson.version} does not match source ${sourcePackageJson.name}@${sourcePackageJson.version}`,
+    )
+  }
+  if (JSON.stringify(packageJson).includes('workspace:')) {
+    throw new Error('packed package.json contains a workspace: dependency spec')
+  }
   if (!existsSync(join(fixture, 'node_modules', '@aihu', 'ui', 'src', 'registry.ts'))) {
     throw new Error('packed payload is missing src/registry.ts')
   }
-  if (!packageJson.exports || !Object.hasOwn(packageJson.exports, './registry')) {
+  if (
+    !packageJson.exports ||
+    !Object.hasOwn(packageJson.exports, './registry') ||
+    JSON.stringify(packageJson.exports['./registry']) !==
+      JSON.stringify({ types: './src/registry.ts' })
+  ) {
     throw new Error('packed package is missing the ./registry export')
+  }
+  const packedRegistry = readFileSync(
+    join(fixture, 'node_modules', '@aihu', 'ui', 'registry.json'),
+    'utf8',
+  )
+  if (packedRegistry !== generatedRegistry || packedRegistry !== actualRegistry) {
+    throw new Error('packed registry.json differs from the checked-in generated registry')
   }
 
   writeFileSync(
