@@ -1,0 +1,73 @@
+name: Publish UI registry
+
+on:
+  push:
+    tags:
+      - 'ui-v*'
+
+permissions:
+  contents: read
+
+env:
+  NPM_REGISTRY: https://registry.npmjs.org
+
+jobs:
+  verify:
+    name: Verify release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: ${{ env.NPM_REGISTRY }}
+      - run: bun install --frozen-lockfile
+      - run: bun run check:ci
+      - name: Verify tag matches package version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          expected="${RELEASE_TAG#ui-v}"
+          actual="$(node -p "require('./package.json').version")"
+          if [ "$expected" != "$actual" ]; then
+            echo "::error::tag $RELEASE_TAG must match @aihu/ui@$actual"
+            exit 1
+          fi
+
+  publish:
+    name: Publish @aihu/ui
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: ${{ env.NPM_REGISTRY }}
+      - run: bun install --frozen-lockfile
+      - name: Publish exact version idempotently
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          package="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if npm view "$package@$version" version --registry "$NPM_REGISTRY" >/dev/null 2>&1; then
+            echo "$package@$version already exists; keeping release idempotent"
+          else
+            npm publish . --access public --provenance --registry "$NPM_REGISTRY"
+          fi

@@ -60,15 +60,13 @@ import { mount } from '@aihu/arbor'
 import { _setMount, _setSignal } from '@aihu/runtime'
 import { signal } from '@aihu/signals'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { resolvePublishedCompilerBinary } from '../../../scripts/lib/compiler-binary.ts'
 
 const __dir = dirname(new URL(import.meta.url).pathname)
-const REPO = resolve(__dir, '../../..')
 const REGISTRY = resolve(__dir, '../registry')
 /** Emitted modules land inside the repo so vitest transforms + aliases them. */
 const EMIT_DIR = resolve(__dir, '.client-emit')
 
-const COMPILER = resolvePublishedCompilerBinary()
+const COMPILER = resolve(process.cwd(), 'node_modules/@aihu/compiler/bin/aihu-compile.mjs')
 
 /** The four recipes that carried the dead registration block. */
 const RECIPES = ['button', 'card', 'badge', 'separator'] as const
@@ -131,15 +129,7 @@ function compile(name: string): string {
   )
   if (out.status !== 0) throw new Error(`aihu-compile failed for ${name}: ${out.stderr}`)
   const file = resolve(EMIT_DIR, `${tag}.ts`)
-  // `@aihu/primitives/<sub>` has no vitest alias (only the barrel does); map any
-  // such subpath to workspace source so a recipe that grows one still loads.
-  writeFileSync(
-    file,
-    out.stdout.replace(
-      /from '@aihu\/primitives\/([^']+)'/g,
-      (_m, sub: string) => `from '${resolve(REPO, 'packages/primitives/src', sub, 'index.ts')}'`,
-    ),
-  )
+  writeFileSync(file, out.stdout)
   return file
 }
 

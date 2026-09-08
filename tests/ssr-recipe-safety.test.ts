@@ -57,53 +57,9 @@ import { _withSsrLifecycle } from '@aihu/runtime/ssr'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 const __dirname = dirname(new URL(import.meta.url).pathname)
-const REPO = resolve(__dirname, '../../..')
 const REGISTRY = resolve(__dirname, '../registry')
 /** Emitted modules land inside the repo so vitest will transform them. */
 const EMIT_DIR = join(__dirname, '.ssr-emit')
-
-/**
- * Bare specifier → the workspace SOURCE file behind it.
- *
- * Every import the compiler emits for a recipe is rewritten to an absolute
- * path before the module is written out. Two reasons, and the second is the
- * load-bearing one:
- *
- *   1. It tests `src/`, not `dist/`. A `dist/`-resolved run would validate the
- *      last build — and the fix under test lives in `@aihu/primitives`' source.
- *   2. It removes the build-order coupling entirely. `bun run test` runs BEFORE
- *      `bun run build` in this repo's `check:ci`, so a subpath like
- *      `@aihu/primitives/slider` (which `package.json#exports` maps to
- *      `dist/slider.js`) would not resolve at all in a fresh clone.
- *
- * The DOM engine is deliberately different: recipes exercise its published
- * boundary, because it is independently released from this repository.
- * `resolveSpecifier` throws on any other unknown Aihu package, so a recipe
- * that starts importing something new still fails loudly rather than silently
- * skipping.
- */
-function resolveSpecifier(spec: string): string {
-  if (spec === '@aihu/arbor' || spec === '@aihu/signals') return spec
-  const direct: Record<string, string> = {
-    '@aihu/runtime': 'packages/runtime/src/index.ts',
-    '@aihu/runtime/ssr': 'packages/runtime/src/ssr-string.ts',
-    '@aihu/context': 'packages/context/src/index.ts',
-    '@aihu/css-engine/runtime/cn': 'packages/css-engine/src/runtime/cn.ts',
-  }
-  const hit = direct[spec]
-  if (hit !== undefined) return join(REPO, hit)
-  // `@aihu/primitives/slider` → packages/primitives/src/slider/index.ts
-  const prim = /^@aihu\/primitives\/(.+)$/.exec(spec)
-  if (prim) return join(REPO, 'packages/primitives/src', prim[1]!, 'index.ts')
-  // `@aihu/use/motion/useCountTo` → packages/use/src/motion/useCountTo/index.ts
-  const use = /^@aihu\/use\/(.+)$/.exec(spec)
-  if (use) return join(REPO, 'packages/use/src', use[1]!, 'index.ts')
-  throw new Error(
-    `ssr-recipe-safety: no source mapping for '${spec}'. A recipe imports something this ` +
-      `test does not know how to resolve to workspace source — add it to resolveSpecifier ` +
-      `rather than letting the module fall back to a dist build.`,
-  )
-}
 
 /** Every recipe in the registry, as `[name, absolute .aihu path]`. */
 function recipes(): Array<readonly [string, string]> {
@@ -121,8 +77,8 @@ function recipes(): Array<readonly [string, string]> {
 const RECIPES = recipes()
 
 /**
- * Compile one recipe to the server target and write it out with every import
- * rewritten to workspace source.
+ * Compile one recipe to the server target and keep imports on the published
+ * package boundary.
  *
  * The `aihu-` prefix on the compiled id is not cosmetic: a recipe is stored
  * under its bare name (`card/card.aihu`) but registers the PREFIXED tag that
@@ -135,8 +91,7 @@ function emit(name: string, file: string): string {
   const { code } = transform(src, join(dirname(file), `aihu-${name}.aihu`), { target: 'server' })
   const rewritten = code.replace(/(\bfrom\s+)'([^']+)'/g, (_m, kw: string, spec: string) => {
     if (!spec.startsWith('@aihu/')) return `${kw}'${spec}'`
-    const resolved = resolveSpecifier(spec)
-    return `${kw}'${resolved.startsWith('@aihu/') ? resolved : pathToFileURL(resolved).href}'`
+    return `${kw}'${spec}'`
   })
   const out = join(EMIT_DIR, `aihu-${name}.ts`)
   writeFileSync(out, rewritten)

@@ -1,5 +1,15 @@
 # @aihu/ui
 
+## 0.1.2
+
+### Patch Changes
+
+- Extract `@aihu/ui` into the standalone `aihu-project/aihu-ui` repository.
+- Publish the public `@aihu/ui/registry` type contract with the recipe registry
+  and its validation suite.
+- Replace workspace-only tooling assumptions with published dependency ranges
+  and an isolated packed-contract check.
+
 ## 0.1.1
 
 ### Patch Changes
