@@ -11,7 +11,11 @@
       ],
       "description": "Decorative hero-section character field — a monospaced grid of glyphs drifting, pulsing, or wiping in on a managed canvas, built on useCharacterField.",
       "variants": {
-        "mode": ["drift", "pulse", "reveal"]
+        "mode": [
+          "drift",
+          "pulse",
+          "reveal"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -54,7 +58,12 @@
       ],
       "description": "Presentational badge recipe — inline-flex pill with a variant matrix.",
       "variants": {
-        "variant": ["default", "secondary", "destructive", "outline"]
+        "variant": [
+          "default",
+          "secondary",
+          "destructive",
+          "outline"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -76,7 +85,9 @@
         }
       ],
       "description": "Drag-to-reveal image comparison, built on the AihuSliderRoot primitive — keyboard-operable divider between named before/after slots.",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -98,7 +109,10 @@
       ],
       "description": "Presentational oversized watermark-style text, typically a footer wordmark. Decorative, hidden from the accessibility tree.",
       "variants": {
-        "weight": ["bold", "black"]
+        "weight": [
+          "bold",
+          "black"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -123,8 +137,19 @@
       "dependencies": [],
       "registryDependencies": [],
       "variants": {
-        "variant": ["default", "destructive", "outline", "ghost", "link"],
-        "size": ["sm", "md", "lg", "icon"]
+        "variant": [
+          "default",
+          "destructive",
+          "outline",
+          "ghost",
+          "link"
+        ],
+        "size": [
+          "sm",
+          "md",
+          "lg",
+          "icon"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -168,7 +193,10 @@
       ],
       "description": "Presentational single chat message bubble — speaker-aware alignment and accent, optional initials avatar.",
       "variants": {
-        "speaker": ["user", "assistant"]
+        "speaker": [
+          "user",
+          "assistant"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -190,10 +218,19 @@
         }
       ],
       "description": "Floating action button + non-modal popover panel shell — a generic chat-launcher, deliberately with no chat logic (panel content is a plain slot).",
-      "dependencies": ["@aihu/primitives"],
-      "registryDependencies": ["popover"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
+      "registryDependencies": [
+        "popover"
+      ],
       "variants": {
-        "corner": ["bottom-right", "bottom-left", "top-right", "top-left"]
+        "corner": [
+          "bottom-right",
+          "bottom-left",
+          "top-right",
+          "top-left"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -217,7 +254,9 @@
         }
       ],
       "description": "Styled checkbox recipe — light-DOM element extending the headless AihuCheckboxRoot primitive (tri-state, Space toggle, native form participation).",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -239,9 +278,14 @@
         }
       ],
       "description": "Presentational social-proof pill — pairs a status-dot-style lead slot with a metric.",
-      "registryDependencies": ["status-dot"],
+      "registryDependencies": [
+        "status-dot"
+      ],
       "variants": {
-        "tone": ["neutral", "accent"]
+        "tone": [
+          "neutral",
+          "accent"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -287,7 +331,9 @@
         }
       ],
       "description": "Styled modal dialog recipe — light-DOM pieces extending the headless AihuDialog primitives (focus-trap + return-focus, Escape-to-close, aria-modal, click-outside dismissal).",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -309,9 +355,16 @@
         }
       ],
       "description": "Presentational label pill, typically preceding a heading. Composes with status-dot in its lead slot.",
-      "registryDependencies": ["status-dot"],
+      "registryDependencies": [
+        "status-dot"
+      ],
       "variants": {
-        "tone": ["neutral", "accent", "success", "warning"]
+        "tone": [
+          "neutral",
+          "accent",
+          "success",
+          "warning"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -354,7 +407,11 @@
       ],
       "description": "Presentational frosted-glass surface card — backdrop-filter blur over a translucent, color-mixed background.",
       "variants": {
-        "padding": ["sm", "md", "lg"]
+        "padding": [
+          "sm",
+          "md",
+          "lg"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -397,8 +454,16 @@
       ],
       "description": "Presentational text decoration — applies the pack's brand gradient as text fill.",
       "variants": {
-        "weight": ["normal", "medium", "semibold", "bold"],
-        "font": ["sans", "serif"]
+        "weight": [
+          "normal",
+          "medium",
+          "semibold",
+          "bold"
+        ],
+        "font": [
+          "sans",
+          "serif"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -552,7 +617,9 @@
         }
       ],
       "description": "Styled non-modal popover recipe — light-DOM pieces extending the headless AihuPopover primitives (disclosure trigger, positioned panel, outside-pointerdown + Escape dismissal, no focus trap).",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -576,7 +643,10 @@
       ],
       "description": "Pricing tier card — tier/price/period, an optional featured accent border/elevation, and a default slot for the consumer's feature list.",
       "variants": {
-        "featured": ["off", "on"]
+        "featured": [
+          "off",
+          "on"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -618,7 +688,10 @@
         }
       ],
       "description": "Larger hero variant composing gradient-text (heading) above a prompt bar, centered layout.",
-      "registryDependencies": ["gradient-text", "prompt"],
+      "registryDependencies": [
+        "gradient-text",
+        "prompt"
+      ],
       "meta": {
         "capabilities": {
           "interactive": false,
@@ -640,8 +713,14 @@
       ],
       "description": "Presentational inline text emphasis for prompts/callouts — underline accent with an optional blinking caret.",
       "variants": {
-        "tone": ["neutral", "accent"],
-        "caret": ["off", "on"]
+        "tone": [
+          "neutral",
+          "accent"
+        ],
+        "caret": [
+          "off",
+          "on"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -664,7 +743,10 @@
       ],
       "description": "Presentational rotating headline word/phrase — cycles through a comma-separated item list on a fixed interval, cross-fading each change.",
       "variants": {
-        "tone": ["neutral", "accent"]
+        "tone": [
+          "neutral",
+          "accent"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -687,7 +769,10 @@
       ],
       "description": "Presentational separator recipe — token-colored 1px rule with role=separator + aria-orientation.",
       "variants": {
-        "orientation": ["horizontal", "vertical"]
+        "orientation": [
+          "horizontal",
+          "vertical"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -710,7 +795,10 @@
       ],
       "description": "Presentational sentence where one word wiggles for attention at a time, the highlight advancing left to right, looping.",
       "variants": {
-        "tone": ["neutral", "accent"]
+        "tone": [
+          "neutral",
+          "accent"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -733,9 +821,19 @@
       ],
       "description": "Presentational decorative accent mark — a four-pointed star with an optional shimmer.",
       "variants": {
-        "size": ["sm", "md", "lg"],
-        "tone": ["neutral", "accent"],
-        "shimmer": ["off", "on"]
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ],
+        "tone": [
+          "neutral",
+          "accent"
+        ],
+        "shimmer": [
+          "off",
+          "on"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -778,9 +876,23 @@
       ],
       "description": "Presentational status indicator — a semantic-colored dot with an optional pulsing liveness ring.",
       "variants": {
-        "status": ["neutral", "online", "busy", "away", "info", "offline"],
-        "size": ["sm", "md", "lg"],
-        "pulse": ["off", "on"]
+        "status": [
+          "neutral",
+          "online",
+          "busy",
+          "away",
+          "info",
+          "offline"
+        ],
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ],
+        "pulse": [
+          "off",
+          "on"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -803,7 +915,11 @@
       ],
       "description": "Presentational full-width announcement bar. No dismiss affordance in this slice.",
       "variants": {
-        "tone": ["neutral", "accent", "warning"]
+        "tone": [
+          "neutral",
+          "accent",
+          "warning"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -825,7 +941,9 @@
         }
       ],
       "description": "Styled switch recipe — light-DOM element extending the headless AihuSwitchRoot primitive (binary toggle, Space/Enter activation, native form participation).",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -847,7 +965,9 @@
         }
       ],
       "description": "Styled 3-value response-temperature preset picker (Precise / Balanced / Creative) — light-DOM element extending the headless AihuRadioGroupRoot primitive (roving tabindex, arrow-key selection, native form participation).",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -891,7 +1011,10 @@
       ],
       "description": "Presentational LLM-response-streaming look — reveals a sentence word by word with a blinking caret.",
       "variants": {
-        "loop": ["off", "on"]
+        "loop": [
+          "off",
+          "on"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -921,7 +1044,9 @@
         }
       ],
       "description": "Styled tooltip recipe — light-DOM pieces extending the headless AihuTooltip primitives (hover/focus open, Escape dismiss, aria-describedby, placement positioning). Non-focus-trapping overlay.",
-      "dependencies": ["@aihu/primitives"],
+      "dependencies": [
+        "@aihu/primitives"
+      ],
       "meta": {
         "capabilities": {
           "interactive": true,
@@ -966,8 +1091,15 @@
       ],
       "description": "Presentational braille-glyph loading spinner — cycles through a fixed frame set on a short interval.",
       "variants": {
-        "size": ["sm", "md", "lg"],
-        "tone": ["neutral", "accent"]
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ],
+        "tone": [
+          "neutral",
+          "accent"
+        ]
       },
       "meta": {
         "capabilities": {
@@ -990,7 +1122,10 @@
       ],
       "description": "Presentational rolling headline word — cycles through a comma-separated item list, rolling each new word down into a clipped window.",
       "variants": {
-        "tone": ["neutral", "accent"]
+        "tone": [
+          "neutral",
+          "accent"
+        ]
       },
       "meta": {
         "capabilities": {

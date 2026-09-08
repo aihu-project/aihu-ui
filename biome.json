@@ -12,6 +12,7 @@
       "!node_modules",
       "!coverage",
       "!dist",
+      "!registry.json",
       "!tests/.client-emit",
       "!tests/.ssr-emit",
       "!bun.lock"
