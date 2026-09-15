@@ -31,6 +31,12 @@ alias for existing in-repo consumers.
 | `badge` | styled | presentational; variant matrix |
 | `separator` | styled | presentational; `orientation` + `role="separator"` |
 
+> The catalog has grown past this initial Phase 1 set — `registry.json` at the
+> package root currently lists 43 recipes (form controls, overlays, and a set
+> of decorative/marketing recipes such as `aurora`, `sparkle`, and
+> `logo-marquee`). Run `aihu list` or inspect `registry.json` for the full,
+> current catalog; this table only walks through the original four in detail.
+
 ### CSS attachment (R2): the compiler owns it
 
 A recipe declares its appearance in `@style` and writes **no CSS-attachment
